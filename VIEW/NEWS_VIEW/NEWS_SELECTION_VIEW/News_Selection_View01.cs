@@ -1,0 +1,210 @@
+﻿using EASY_CALLENDER01.SERVICES.NEWS_SERVICES;
+using EASY_CALLENDER01.SERVICES.SECURITY_SERVICES;
+using EASYCONSOLE.VIEW.NEWS_VIEW.NEWS_MAIN;
+using EASY_CALLENDER01.SERVICES.LANGUAGE_SERVICES;
+
+namespace EASYCONSOLE.VIEW.NEWS_VIEW.NEWS_SELECTION_VIEW
+{
+    internal class News_Selection_View01
+    {
+        private static string[] data01 = new string[100];
+        private static Security_Services01 Security_Serv01 = new Security_Services01();
+        private static News_Services01 News_Serv01 = new News_Services01();
+	    private static Language_Services01 Language_Serv01 = new Language_Services01();
+		 
+        public News_Selection_View01()
+        {
+            load_News_Selection_View01().Wait();
+        }
+       private string load_News_Selection_View01_string()
+        {
+            return $"1.) Real_Time_News_Data_GET_Search\n" +
+                   $"2.)Real_Time_News_Data_GET_Top_Headlines\n" +
+                   $"3.)Real_Time_News_Data_GET_Topic_Headlines\n" +
+                   $"4.)Real_Time_News_Data_GET_Topic_News_By_Section\n" +
+                   $"5.)Local_Headlines_Geo\n" +
+                   $"6.)Full_Story_Coverage\n" +
+                   $"7.)Real_Time_News_Data_GET_Language_List\n" +
+                   $"8.) change language\n" +
+                   $"9.) go back\n";
+        }
+
+        private async Task load_News_Selection_View01()
+        {
+
+            Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+
+            while (true)
+            {
+
+                if (Security_Serv01.empty_string(data01[1],out data01[23]) == true)
+                {
+                    if (Security_Serv01.string_only_digit(data01[1],out data01[24]) == true)
+                    {
+                        switch (int.Parse(data01[1]))
+                        {
+                            case 1:
+
+                                data01[2] = $"{News_Serv01.data_array[1]}";
+                                Console.WriteLine(data01[2]);
+                                data01[3] = Console.ReadLine() ?? string.Empty;
+
+                                if (Security_Serv01.empty_string(data01[3],out data01[23]) == true)
+                                {
+                                    data01[4] = await News_Serv01.Real_Time_News_Data_GET_Search(data01[3]);
+                                    Console.WriteLine(data01[4]);
+                                 Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+                                }
+                                else
+                                {
+                                    data01[4] = "Input cannot be empty. Please try again.";
+                                    Console.WriteLine(data01[4]);
+                                    data01[3] = Console.ReadLine() ?? string.Empty;
+                                    continue;
+                                }
+
+
+
+
+                            case 2:
+
+
+                                data01[4] = await News_Serv01.Real_Time_News_Data_GET_Top_Headlines();
+                                Console.WriteLine(data01[4]);
+                             Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+                            case 3:
+
+
+                                data01[4] = await News_Serv01.Real_Time_News_Data_GET_Topic_Headlines();
+                                Console.WriteLine(data01[4]);
+                           Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+                            case 4:
+
+                                data01[2] = $"{News_Serv01.data_array[0]}";
+                                Console.WriteLine(data01[2]);
+                                data01[3] = Console.ReadLine() ?? string.Empty;
+
+                                if (Security_Serv01.empty_string(data01[3],out data01[23]) == true)
+                                {
+                                    data01[4] = await News_Serv01.Real_Time_News_Data_GET_Topic_News_By_Section(data01[3]);
+                                    Console.WriteLine(data01[4]);
+                        Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+                                }
+                                else
+                                {
+                                 
+                                    Console.WriteLine(data01[23]);
+                                    data01[3] = Console.ReadLine() ?? string.Empty;
+                                    continue;
+                                }
+
+                            case 5:
+
+                                data01[2] = $"{News_Serv01.data_array[0]}";
+                                Console.WriteLine(data01[2]);
+                                data01[3] = Console.ReadLine() ?? string.Empty;
+
+                                if (Security_Serv01.empty_string(data01[3],out data01[23]) == true)
+                                {
+                                    data01[4] = await News_Serv01.Local_Headlines_Geo(data01[3]);
+                                    Console.WriteLine(data01[4]);
+                                 Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+                                }
+                                else
+                                {
+                                  
+                                    Console.WriteLine(data01[23]);
+                                    data01[3] = Console.ReadLine() ?? string.Empty;
+                                    continue;
+                                }
+
+
+                            case 6:
+
+                                data01[4] = await News_Serv01.Full_Story_Coverage();
+                                Console.WriteLine(data01[4]);
+                              Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+                            case 7:
+
+                                data01[4] = await News_Serv01.Real_Time_News_Data_GET_Language_List();
+                                Console.WriteLine(data01[4]);
+                                data01[3] = Console.ReadLine() ?? string.Empty;
+                                continue;
+								         case 8:
+                                      foreach (var a in Language_Serv01.language)
+                                {
+                                    data01[2] += $"{a}\n";
+                                }
+                                Console.WriteLine(data01[2]);
+                                data01[3] = Console.ReadLine() ?? string.Empty;      
+            if (Security_Serv01.empty_string(data01[3],out data01[23]) == true)
+                                {
+									if(Security_Serv01.string_only_digit(data01[3],out data01[24])==true)
+									{
+												    Console.WriteLine(Language_Serv01.code[int.Parse(data01[3])]);
+										
+								      Console.WriteLine(load_News_Selection_View01_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+									}
+									else
+									{
+										
+	                                    Console.WriteLine(data01[24]);
+                                    data01[3] = Console.ReadLine() ?? string.Empty;
+                                    continue;
+									}
+									
+							
+										
+										
+										
+									
+								}
+								else
+								{
+									
+									      
+                                    Console.WriteLine(data01[23]);
+                                    data01[3] = Console.ReadLine() ?? string.Empty;
+                                    continue;
+									
+								}
+
+                            case 9:
+                                new News_Main_View01();             
+                                break;
+                        }
+                    }
+                    else
+                    {
+                     
+                        Console.WriteLine(data01[24]);
+                        data01[3] = Console.ReadLine() ?? string.Empty;
+                        continue;
+                    }
+                }
+                else
+                {
+                 
+                    Console.WriteLine(data01[23]);
+                    data01[3] = Console.ReadLine() ?? string.Empty;
+                    continue;
+                }
+            }
+        }
+    }
+}
