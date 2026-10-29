@@ -1,0 +1,87 @@
+﻿using EASYPROJECT01.EASY_CALLENDER01.SERVICES.AI_SERVICES.AI_TEXT_TO_TEXT;
+using EASYPROJECT01.EASY_CALLENDER01.SERVICES.FILES.FILE_HELPER;
+using EASYPROJECT01.EASY_CALLENDER01.SERVICES.SECURITY_SERVICES;
+using EASYPROJECT01.EASYCONSOLE.VIEW.AI_VIEW.AI_MAIN_VIEW;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using EASYPROJECT01.EASY_CALLENDER01.SERVICES.AI_SERVICES.AI_TEXT_TO_IMAGE;
+using EASYPROJECT01.EASY_CALLENDER01.SERVICES.DEVICES.DEVICE_SERVICES;
+
+namespace EASYPROJECT01.EASYCONSOLE.VIEW.AI_VIEW.AI_SELECTION_VIEW
+{
+    internal class Ai_Selection_View04
+    {
+        private static string[] data01 = new string[100];
+        private static Security_Services01 Security_Serv01 = new Security_Services01();
+        private static Ai_Text_To_Image01 Ai_Text_To_I01 = new Ai_Text_To_Image01();
+        private static File_Helper01 File_H01 = new File_Helper01();
+        private static Device_Services01 Device_S01 = new Device_Services01();
+        public Ai_Selection_View04()
+        {
+            load_Ai_Selection_View04().Wait();
+        }
+        private string load_Ai_Selection_View04_string()
+        {
+            return $"1.) Ai iamge gemeration api\n" +
+                   $"2.) to go back\n";
+        }
+        private async Task load_Ai_Selection_View04()
+        {
+            Console.WriteLine(load_Ai_Selection_View04_string());
+            data01[1] = Console.ReadLine() ?? string.Empty;
+            while (true)
+            {
+                if (Security_Serv01.empty_string(data01[1], out data01[23]) == true)
+                {
+                    if (Security_Serv01.string_only_digit(data01[1], out data01[24]) == true)
+                    {
+
+                        switch (int.Parse(data01[1]))
+                        {
+                            case 1:
+                                Console.WriteLine("What image would you like for me to make?");
+                                data01[3] = Console.ReadLine() ?? string.Empty;
+                                if (Security_Serv01.empty_string(data01[3], out data01[23]) == true)
+                                {
+                                    data01[4] = await Ai_Text_To_I01.AI_Text_to_image_Generator_Flux_Free(data01[3]);
+                                    //    string resualts01 = File_H01.file_saved(data01[3], data01[24], 1);
+                                    Console.WriteLine($"{data01[4]}\n{Device_S01.launch_default_browser(data01[4].Trim())}");
+                                    Console.WriteLine(load_Ai_Selection_View04_string());
+                                    data01[1] = Console.ReadLine() ?? string.Empty;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(data01[23]);
+                                    data01[3] = Console.ReadLine() ?? string.Empty;
+                                    continue;
+                                }
+                            case 2:
+                                new Ai_Main_View01();
+                                break;
+                            default:
+                                Console.WriteLine(load_Ai_Selection_View04_string());
+                                Console.WriteLine(data01[0]);
+                                data01[1] = Console.ReadLine() ?? string.Empty;
+                                break;
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine(data01[24]);
+                        data01[1] = Console.ReadLine() ?? string.Empty;
+                        continue;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(data01[23]);
+                    data01[1] = Console.ReadLine() ?? string.Empty;
+                    continue;
+                }
+            }
+        }
+    }
+}
